@@ -74,7 +74,8 @@ def draw_hermite_curve(X: list[float], Y: list[float], dY: list[float], scalar =
     assert len(X) == len(Y) == len(dY)
     N = len(X)
 
-    plt.plot(X[0], Y[0], 'ro')
+    plt.plot(X, Y, '--g', label="Originali")
+    plt.plot(X[0], Y[0], 'ro', label="Mazgas")
     for i in range(N - 1):
         plot_x = np.linspace(X[i], X[i+1], scalar)
         plot_y = []
@@ -91,8 +92,9 @@ def draw_hermite_curve(X: list[float], Y: list[float], dY: list[float], scalar =
             f  = U1*Y[i  ] + V1*dY[i  ]
             f += U2*Y[i+1] + V2*dY[i+1]
             plot_y.append(f)
-        plt.plot(plot_x, plot_y, 'b')
+        plt.plot(plot_x, plot_y, 'b', label="Interpoliuota" if i == 0 else None)
         plt.draw()
+    plt.legend()
     plt.show()
 
 def main(country, interpolation):

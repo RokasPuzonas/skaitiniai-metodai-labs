@@ -139,5 +139,5 @@ def main(country: str, levels: list[int], show_accuracy_plot):
 main(
     country = "Zambia",
     levels = [1, 4, 8, 10],
-    show_accuracy_plot = False,
+    show_accuracy_plot = True,
 )

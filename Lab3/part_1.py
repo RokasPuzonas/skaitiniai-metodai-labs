@@ -44,22 +44,12 @@ def gauso_atispindzio_metodas(lygciu_sistema: LygciuSistema, epsilon=1e-7):
         A1[i:n, :] = Q.dot(A1[i:n, :])
 
     if np.sum(np.abs(A1[n-1, 0:n-nb+1])) < epsilon:
-        # if abs(A1[n-1, n]) < epsilon:
-        #     print("Be galo daug sprendiniu")
-        # else:
-        #     print("Nera sprendiniu")
         return None
 
     # atgalinis etapas:
     x = np.zeros(shape=(n, 1))
     for i in range(n - 1, -1, -1):
         x[i, :] = (A1[i, n:n + nb] - A1[i, i + 1:n] * x[i + 1:n, :]) / A1[i, i]
-
-    # print("Sprendinys:")
-    # for i in range(0, n):
-    #     print(f"x{i} = {x[i, 0]:.5f}")
-
-    # print("Sklaida:", gauti_sklaida(lygciu_sistema, list(x.flat)))
 
     return list(x.flat)
 
@@ -142,22 +132,24 @@ def plot_vienanariu_paklaida(F, x_s: list[float], vienanariai):
 def main(F, x_range, mazgu_kiekis, tarpiniai_taskai):
     from_x, to_x = x_range
 
-    if True:
+    if False:
         mazgai = gauti_xy_taskus(F, from_x, to_x, mazgu_kiekis)
         vienanariai = gauti_vienanario_sprendinius(mazgai[0], mazgai[1])
         x_s = gauti_x_taskus(from_x, to_x, tarpiniai_taskai)
 
-        plot_vienanariu_palyginima(F, x_s, vienanariai)
-        #plot_vienanariu_paklaida(F, x_s, vienanariai)
+        #plt.plot(mazgai[0], mazgai[1], "o", label="Mazgas")
+        #plot_vienanariu_palyginima(F, x_s, vienanariai)
+        plot_vienanariu_paklaida(F, x_s, vienanariai)
         print("Paklaida:", sum(gauti_vienanariu_paklaidas(F, x_s, vienanariai)))
 
-    if False:
+    if True:
         ciobysevo_abscises = gauti_ciobysevo_abscises(mazgu_kiekis)
         x_mazgai = konvertuoti_is_ciobysevo(ciobysevo_abscises, to_x, from_x)
         y_mazgai = list(F(x) for x in x_mazgai)
         vienanariai = gauti_vienanario_sprendinius(x_mazgai, y_mazgai)
 
         x_s = gauti_x_taskus(from_x, to_x, tarpiniai_taskai)
+        plt.plot(x_mazgai, y_mazgai, "o", label="Mazgas")
         plot_vienanariu_palyginima(F, x_s, vienanariai)
         #plot_vienanariu_paklaida(F, x_s, vienanariai)
         print("Paklaida:", sum(gauti_vienanariu_paklaidas(F, x_s, vienanariai)))
@@ -168,5 +160,5 @@ main(
     F = lambda x: cos(2*x) * (sin(3*x) + 1.5) - cos(x/5),
     x_range = (-2, 3),
     mazgu_kiekis = 10,
-    tarpiniai_taskai = 30
+    tarpiniai_taskai = 200
 )
